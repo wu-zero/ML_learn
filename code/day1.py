@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 # 2. 导入数据集
-dataset = pd.read_csv('./data/Data.csv')
+dataset = pd.read_csv('./dataset/Data.csv')
 X = dataset.iloc[:,:-1].values # iloc 行列号索引 # values 去掉index、colums,变numpy
 Y = dataset.iloc[:,3].values
 # print(X)
