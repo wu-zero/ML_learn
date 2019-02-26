@@ -21,18 +21,28 @@ X[:, 1:3] = imputer.transform(X[:, 1:3])
 
 # 4. 解析分类数据
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+
 # 处理X
 LabelEncoder_X = LabelEncoder()  # 标签变数值
 X[:, 0] = LabelEncoder_X.fit_transform(X[:, 0])
 onehotencoder = OneHotEncoder(categorical_features=[0])  # 数字变one-hot编码
 X = onehotencoder.fit_transform(X).toarray()  # 注意toarray()
 
+# #可以替代上一段,适用于skleran version 0.22
+# from sklearn.preprocessing import OneHotEncoder
+# from sklearn.compose import ColumnTransformer
+# columntransformer = ColumnTransformer(
+#     transformers=[("onehot",OneHotEncoder(),[0])],remainder="passthrough"
+# )
+# X = columntransformer.fit_transform(X)
+
+
 # 处理Y
 labelencoder_Y = LabelEncoder()
 Y = labelencoder_Y.fit_transform(Y)
-# print(X)
-# print(Y)
-# print('='*20)
+print(X)
+print(Y)
+print('='*20)
 
 # 5. 拆分数据集
 from sklearn.model_selection import train_test_split
