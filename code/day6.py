@@ -45,11 +45,11 @@ for i,j in enumerate(np.unique(Y_set)):
     plt.scatter(X_set[Y_set==j,0],X_set[Y_set==j,1],
                 c=ListedColormap(('red', 'green'))(i), label=j)
 # unique() 去重
-plt. title(' LOGISTIC(Training set)')
-plt. xlabel(' Age')
-plt. ylabel(' Estimated Salary')
-plt. legend()
-plt. show()
+plt.title(' LOGISTIC(Training set)')
+plt.xlabel(' Age')
+plt.ylabel(' Estimated Salary')
+plt.legend()
+plt.show()
 
 # 
 X_set,Y_set=X_test,Y_test
@@ -63,9 +63,9 @@ for i,j in enumerate(np.unique(Y_set)):
     plt.scatter(X_set[Y_set==j,0],X_set[Y_set==j,1],
                 c=ListedColormap(('red', 'green'))(i), label=j)
 
-plt. title(' LOGISTIC(Test set)')
-plt. xlabel(' Age')
-plt. ylabel(' Estimated Salary')
-plt. legend()
-plt. show()
+plt.title(' LOGISTIC(Test set)')
+plt.xlabel(' Age')
+plt.ylabel(' Estimated Salary')
+plt.legend()
+plt.show()
 
