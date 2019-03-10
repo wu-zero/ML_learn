@@ -16,6 +16,7 @@ sess = tf.Session(config=config)
 # 1. 导入数据
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets('../data/MNIST_data', one_hot=False, source_url='http://yann.lecun.com/exdb/mnist/')
+# 'https://storage.googleapis.com/cvdf-datasets/mnist/'
 
 print('training data shape ', mnist.train.images.shape)
 print('training label shape ', mnist.train.labels.shape)
