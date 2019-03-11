@@ -30,7 +30,7 @@ h_pool2_flat = tf.reshape(h_pool2, [-1, 7*7*64])
 h_fc1 = tf.layers.dense(h_pool2_flat, 1024, name='fc1', activation=tf.nn.relu)
 
 keep_prob = tf.placeholder(tf.float32)
-h_fc1_drop = tf.nn.dropout(h_fc1, 0.5)
+h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
 h_fc2 = tf.layers.dense(h_fc1_drop, units=10, name='fc2')
 y_conv = h_fc2
 print('Finished building network')

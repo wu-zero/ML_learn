@@ -68,7 +68,8 @@ h_fc1 = fc(h_pool2_flat, 7*7*64, 1024, 'fc1', 'relu')
 
 # dropout: 输出的维度和h_fc1一样，只是随机部分值被值为零
 keep_prob = tf.placeholder(tf.float32)
-h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
+h_fc1_drop = dropout(h_fc1, keep_prob,'drop1')
+
 h_fc2 = fc(h_fc1_drop, 1024, 10, 'fc2')
 y_conv = tf.nn.softmax(h_fc2)
 print('Finished building network.')
