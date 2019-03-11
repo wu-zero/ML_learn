@@ -90,18 +90,18 @@ train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 correct_prediction = tf.equal(tf.argmax(y_pred, 1), tf.argmax(y_input, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
-# 定义了变量必须要初始化，或者下面形式
+# 定义了变量必须要初始化
 sess.run(tf.global_variables_initializer())
 
 import time
-
-
 time0 = time.time()
 # 训练
 for i in range(5000):
     X_batch, y_batch = mnist.train.next_batch(batch_size=100)
     cost, acc,  _ = sess.run([cross_entropy, accuracy, train_step], feed_dict={X_input: X_batch, y_input: y_batch, keep_prob: 0.5})
-    if (i+1) % 500 == 0:
+
+    # 显示训练过程结果
+    if (i + 1) % 500 == 0:
         # 分 100 个batch 迭代
         test_acc = 0.0
         test_cost = 0.0

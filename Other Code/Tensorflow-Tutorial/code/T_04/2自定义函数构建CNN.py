@@ -77,37 +77,42 @@ print('Finished building network.')
 #  3.训练和评估
 
 # 损失函数
-cross_entropy = -tf.reduce_sum(y_*tf.log(y_conv))
+cross_entropy = -tf.reduce_sum(y_ * tf.log(y_conv))
 # 优化函数
 train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 # 预测准确结果统计
 correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
 
-# 如果一次性来做测试的话，可能占用的显存会比较多，所以测试的时候也可以设置较小的batch来看准确率
-test_acc_sum = tf.Variable(0.0)
-batch_acc = tf.placeholder(tf.float32)
-new_test_acc_sum = tf.add(test_acc_sum, batch_acc)
-update = tf.assign(test_acc_sum, new_test_acc_sum)  # 赋值
-
-# 定义了变量必须要初始化，或者下面形式
+# 定义了变量必须要初始化
 sess.run(tf.global_variables_initializer())
 # 或者某个变量单独初始化 如：
 # x.initializer.run()
 
+
+import time
+time0 = time.time()
 # 训练
 for i in range(5000):
-    X_batch, y_batch = mnist.train.next_batch(batch_size=50)
-    if i % 500 == 0:
-        train_accuracy = accuracy.eval(feed_dict={X_: X_batch, y_: y_batch, keep_prob: 1.0})  # .eval 启动计算
-        print("step %d, training acc %g" % (i, train_accuracy))
-    train_step.run(feed_dict={X_: X_batch, y_: y_batch, keep_prob: 0.5})
+    X_batch, y_batch = mnist.train.next_batch(batch_size=100)
+    cost, acc, _ = sess.run([cross_entropy, accuracy, train_step],
+                            feed_dict={X_: X_batch, y_: y_batch, keep_prob: 0.5})
+    # 显示训练过程结果
+    if (i + 1) % 500 == 0:
+        # 分 100 个batch 迭代
+        test_acc = 0.0
+        test_cost = 0.0
+        N = 100
+        for j in range(N):
+            X_batch, y_batch = mnist.test.next_batch(batch_size=100)
+            _cost, _acc = sess.run([cross_entropy, accuracy],
+                                   feed_dict={X_: X_batch, y_: y_batch, keep_prob: 1.0})
+            test_acc += _acc
+            test_cost += _cost
+        print("step {}, train cost={:.6f}, acc={:.6f}; test cost={:.6f}, acc={:.6f}; pass {}s".format(i + 1, cost, acc,
+                                                                                                      test_cost / N,
+                                                                                                      test_acc / N,
+                                                                                             time.time() - time0))
+        time0 = time.time()
 
-# 全部训练完了再做测试，batch_size=100
-for i in range(100):
-    X_batch, y_batch = mnist.test.next_batch(batch_size=100)
-    test_acc = accuracy.eval(feed_dict={X_: X_batch, y_: y_batch, keep_prob: 1.0})
-    update.eval(feed_dict={batch_acc: test_acc})
-    if (i+1) % 20 == 0:
-        print("testing step %d, test_acc_sum %g" % (i+1, test_acc_sum.eval()))
-print("test_accuracy %g" % (test_acc_sum.eval() / 100.0))
+
