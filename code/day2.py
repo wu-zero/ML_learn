@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-dataset = pd.read_csv('./dataset/studentscores.csv')
+dataset = pd.read_csv('../dataset/studentscores.csv')
 X = dataset.iloc[:, :1].values
 Y = dataset.iloc[:, 1].values
 
@@ -12,8 +12,8 @@ X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=1/4, random_
 
 # 2. 训练线性回归模型
 from sklearn.linear_model import LinearRegression
-regressor = LinearRegression() # 线性回归模型
-regressor = regressor.fit(X_train, Y_train) # 拟合
+regressor = LinearRegression()  # 线性回归模型
+regressor = regressor.fit(X_train, Y_train)  # 拟合
 
 # 3. 预测
 Y_pred = regressor.predict(X_test) # 预测
